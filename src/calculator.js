@@ -3,13 +3,16 @@ export const calculate = expression => {
   const numbers = expression.split(sign);
 
   return numbers.slice(1).reduce((result, number) => {
-    return sign === "+"
-      ? (result += +number)
-      : sign === "*"
-      ? (result *= +number)
-      : sign === "/"
-      ? (result /= +number)
-      : (result -= +number);
+    switch (sign) {
+      case "+":
+        return result + +number;
+      case "*":
+        return result * +number;
+      case "/":
+        return result / +number;
+      default:
+        return result - +number;
+    }
   }, +numbers[0]);
 };
 
