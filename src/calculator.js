@@ -2,14 +2,14 @@ export const calculate = expression => {
   const sign = evaluateSign(expression);
   const numbers = expression.split(sign);
 
-  return numbers.slice(1).reduce((sum, addend) => {
+  return numbers.slice(1).reduce((result, number) => {
     return sign === "+"
-      ? (sum += +addend)
+      ? (result += +number)
       : sign === "*"
-      ? (sum *= +addend)
+      ? (result *= +number)
       : sign === "/"
-      ? (sum /= +addend)
-      : (sum -= +addend);
+      ? (result /= +number)
+      : (result -= +number);
   }, +numbers[0]);
 };
 
