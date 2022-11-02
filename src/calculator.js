@@ -1,3 +1,1 @@
-export default function (expression) {
-  return expression;
-}
+export const calculate = expression => expression;
