@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Takes arithmetic expression in string format and calculates it.",
   "main": "index.js",
+  "type": "module",
   "author": "Jouni Kantola <jouni@kantola.se>",
   "license": "MIT"
 }
