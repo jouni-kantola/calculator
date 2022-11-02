@@ -8,3 +8,7 @@ test("expression evaluated to number", t => {
 test("can sum", t => {
   t.is(2, calculate("1+1"));
 });
+
+test("supports multiple addends", t => {
+  t.is(4, calculate("1+1+1+1"));
+});
