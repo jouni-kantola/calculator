@@ -16,3 +16,7 @@ test("supports multiple addends", t => {
 test("can subtract", t => {
   t.is(1, calculate("2-1"));
 });
+
+test("can multiply", t => {
+  t.is(10, calculate("2*5"));
+});
