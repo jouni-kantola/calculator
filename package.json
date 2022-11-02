@@ -5,5 +5,11 @@
   "main": "index.js",
   "type": "module",
   "author": "Jouni Kantola <jouni@kantola.se>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "test": "ava"
+  },
+  "devDependencies": {
+    "ava": "^5.0.1"
+  }
 }
