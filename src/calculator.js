@@ -1,1 +1,1 @@
-export const calculate = expression => expression;
+export const calculate = expression => +expression;
