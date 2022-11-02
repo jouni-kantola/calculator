@@ -20,3 +20,7 @@ test("can subtract", t => {
 test("can multiply", t => {
   t.is(10, calculate("2*5"));
 });
+
+test("can divide", t => {
+  t.is(3, calculate("6/2"));
+});

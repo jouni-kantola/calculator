@@ -7,11 +7,14 @@ export const calculate = expression => {
       ? (sum += +addend)
       : sign === "*"
       ? (sum *= +addend)
+      : sign === "/"
+      ? (sum /= +addend)
       : (sum -= +addend);
   }, +numbers[0]);
 };
 
 function evaluateSign(expression) {
+  if (expression.includes("/")) return "/";
   if (expression.includes("*")) return "*";
   if (expression.includes("-")) return "-";
   return "+";
