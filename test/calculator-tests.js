@@ -28,3 +28,7 @@ test("can divide", t => {
 test("can mix addition and subtraction", t => {
   t.is(7, calculate("5+4-2"));
 });
+
+test("evaluate multiplication before addition", t => {
+  t.is(calculate("100*3+2"), calculate("2+100*3"));
+});
