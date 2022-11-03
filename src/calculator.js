@@ -1,8 +1,9 @@
 export const calculate = expression => {
-  const sign = evaluateSign(expression);
-  const operands = expression.split(sign).map(operand => +operand);
+  const parts = expression.split(/(?=[\*\-\+\/])/);
+  return parts.slice(1).reduce((result, part) => {
+    const sign = evaluateSign(part);
+    const operand = +part.slice(1);
 
-  return operands.slice(1).reduce((result, operand) => {
     switch (sign) {
       case "+":
         return result + operand;
@@ -13,7 +14,7 @@ export const calculate = expression => {
       default:
         return result - operand;
     }
-  }, operands[0]);
+  }, +parts[0]);
 };
 
 function evaluateSign(expression) {
