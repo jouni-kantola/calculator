@@ -26,21 +26,25 @@ function scan(expression) {
 export const calculate = expression => {
   const tokens = scan(expression);
   return tokens.slice(1).reduce((result, token) => {
-    const sign = evaluateSign(token.value);
-    const operand = +token.value.slice(1);
-
-    switch (sign) {
-      case "+":
-        return result + operand;
-      case "*":
-        return result * operand;
-      case "/":
-        return result / operand;
-      default:
-        return result - operand;
-    }
+    return evaluate(result, token.value);
   }, +tokens[0].value);
 };
+
+function evaluate(leftOperand, expression) {
+  const operator = evaluateSign(expression);
+  const rightOperand = +expression.slice(1);
+
+  switch (operator) {
+    case "+":
+      return leftOperand + rightOperand;
+    case "*":
+      return leftOperand * rightOperand;
+    case "/":
+      return leftOperand / rightOperand;
+    default:
+      return leftOperand - rightOperand;
+  }
+}
 
 function evaluateSign(expression) {
   if (expression.includes("/")) return "/";
