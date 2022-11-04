@@ -1,6 +1,13 @@
+class Token {
+  constructor(type, value) {
+    this.type = type;
+    this.value = value;
+  }
+}
+
 function scan(expression) {
-  let tokens = [expression.match(/\d+/)[0]];
-  let position = tokens[0].length;
+  let tokens = [new Token("operand", expression.match(/\d+/)[0])];
+  let position = tokens[0].value.length;
   while (position < expression.length) {
     let current = expression[position++];
 
@@ -11,16 +18,16 @@ function scan(expression) {
       current += expression[position++];
     }
 
-    tokens.push(current);
+    tokens.push(new Token("expression", current));
   }
   return tokens;
 }
 
 export const calculate = expression => {
-  const parts = scan(expression);
-  return parts.slice(1).reduce((result, part) => {
-    const sign = evaluateSign(part);
-    const operand = +part.slice(1);
+  const tokens = scan(expression);
+  return tokens.slice(1).reduce((result, token) => {
+    const sign = evaluateSign(token.value);
+    const operand = +token.value.slice(1);
 
     switch (sign) {
       case "+":
@@ -32,7 +39,7 @@ export const calculate = expression => {
       default:
         return result - operand;
     }
-  }, +parts[0]);
+  }, +tokens[0].value);
 };
 
 function evaluateSign(expression) {
