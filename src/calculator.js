@@ -1,6 +1,6 @@
-export const calculate = expression => {
-  let parts = [expression.match(/\d+/)[0]];
-  let position = parts[0].length;
+function scan(expression) {
+  let tokens = [expression.match(/\d+/)[0]];
+  let position = tokens[0].length;
   while (position < expression.length) {
     let current = expression[position++];
 
@@ -11,9 +11,13 @@ export const calculate = expression => {
       current += expression[position++];
     }
 
-    parts.push(current);
+    tokens.push(current);
   }
+  return tokens;
+}
 
+export const calculate = expression => {
+  const parts = scan(expression);
   return parts.slice(1).reduce((result, part) => {
     const sign = evaluateSign(part);
     const operand = +part.slice(1);
