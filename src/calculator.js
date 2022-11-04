@@ -26,23 +26,30 @@ function scan(expression) {
 export const calculate = expression => {
   const tokens = scan(expression);
   return tokens.slice(1).reduce((result, token) => {
-    return evaluate(result, token.value);
+    const operator = evaluateSign(token.value);
+    const rightOperand = +token.value.slice(1);
+    return new Expression(result, rightOperand, operator).evaluate();
   }, +tokens[0].value);
 };
 
-function evaluate(leftOperand, expression) {
-  const operator = evaluateSign(expression);
-  const rightOperand = +expression.slice(1);
+class Expression {
+  constructor(leftOperand, rightOperand, operator) {
+    this.leftOperand = leftOperand;
+    this.rightOperand = rightOperand;
+    this.operator = operator;
+  }
 
-  switch (operator) {
-    case "+":
-      return leftOperand + rightOperand;
-    case "*":
-      return leftOperand * rightOperand;
-    case "/":
-      return leftOperand / rightOperand;
-    default:
-      return leftOperand - rightOperand;
+  evaluate() {
+    switch (this.operator) {
+      case "+":
+        return this.leftOperand + this.rightOperand;
+      case "*":
+        return this.leftOperand * this.rightOperand;
+      case "/":
+        return this.leftOperand / this.rightOperand;
+      default:
+        return this.leftOperand - this.rightOperand;
+    }
   }
 }
 
