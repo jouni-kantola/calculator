@@ -6,8 +6,8 @@ class Token {
 }
 
 function scan(expression) {
-  let tokens = [new Token("operand", expression.match(/\d+/)[0])];
-  let position = tokens[0].value.length;
+  let tokens = [];
+  let position = 0;
   while (position < expression.length) {
     let current = expression[position++];
 
@@ -18,18 +18,30 @@ function scan(expression) {
       current += expression[position++];
     }
 
-    tokens.push(new Token("expression", current));
+    tokens.push(new Token("operand", Number(current)));
+
+    if (position < expression.length) {
+      current = expression[position++];
+      tokens.push(new Token("operator", current));
+    }
   }
   return tokens;
 }
 
-export const calculate = expression => {
+export const calculate = (expression) => {
   const tokens = scan(expression);
-  return tokens.slice(1).reduce((result, token) => {
-    const operator = evaluateSign(token.value);
-    const rightOperand = +token.value.slice(1);
-    return new Expression(result, rightOperand, operator).evaluate();
-  }, +tokens[0].value);
+
+  let result = tokens[0].value;
+
+  for (let i = 1; i < tokens.length; i = i + 2) {
+    result = new Expression(
+      result,
+      tokens[i + 1].value,
+      tokens[i].value
+    ).evaluate();
+  }
+
+  return result;
 };
 
 class Expression {
@@ -51,11 +63,4 @@ class Expression {
         return this.leftOperand - this.rightOperand;
     }
   }
-}
-
-function evaluateSign(expression) {
-  if (expression.includes("/")) return "/";
-  if (expression.includes("*")) return "*";
-  if (expression.includes("-")) return "-";
-  return "+";
 }
