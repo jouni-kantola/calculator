@@ -31,17 +31,19 @@ function scan(expression) {
 export const calculate = (expression) => {
   const tokens = scan(expression);
 
-  let result = tokens[0].value;
+  let accumulated = tokens[0].value;
 
   for (let i = 1; i < tokens.length; i = i + 2) {
-    result = new Expression(
-      result,
-      tokens[i + 1].value,
-      tokens[i].value
-    ).evaluate();
+    const leftOperand = accumulated;
+    const rightOperand = tokens[i + 1].value;
+    const operator = tokens[i].value;
+
+    const expression = new Expression(leftOperand, rightOperand, operator);
+
+    accumulated = expression.evaluate();
   }
 
-  return result;
+  return accumulated;
 };
 
 class Expression {
