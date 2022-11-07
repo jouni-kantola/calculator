@@ -33,3 +33,8 @@ test("evaluate multiplication before addition", t => {
   t.is(calculate("100*3+2"), 302);
   t.is(calculate("2+100*3"), 302);
 });
+
+test("evaluate same precedence operators left to right", t => {
+  t.is(calculate("10-10+100*4/2"), 200);
+  t.is(calculate("10-10+100/4*2"), 50);
+});
