@@ -28,22 +28,52 @@ function scan(expression) {
   return tokens;
 }
 
+function parse(tokens) {
+  let stack = [];
+  let queue = [];
+
+  for (let token of tokens) {
+    if (token.type === "operand") queue.push(token);
+    else {
+      if (token.value === "+" || token.value === "-") {
+        while (
+          stack.length &&
+          (stack[stack.length - 1].value === "*" ||
+            stack[stack.length - 1].value === "/")
+        ) {
+          queue.push(stack.pop());
+        }
+      }
+      stack.push(token);
+    }
+  }
+
+  while (stack.length) {
+    queue.push(stack.pop());
+  }
+
+  const operands = [];
+  while (queue.length) {
+    const term = queue.shift();
+    if (term.type === "operand") operands.push(term.value);
+    else {
+      const rightOperand = operands.pop();
+      const leftOperand = operands.pop();
+      const operator = term.value;
+
+      operands.push(
+        new Expression(leftOperand, rightOperand, operator).evaluate()
+      );
+    }
+  }
+
+  return operands.pop();
+}
+
 export const calculate = (expression) => {
   const tokens = scan(expression);
 
-  let accumulated = tokens[0].value;
-
-  for (let i = 1; i < tokens.length; i = i + 2) {
-    const leftOperand = accumulated;
-    const rightOperand = tokens[i + 1].value;
-    const operator = tokens[i].value;
-
-    const expression = new Expression(leftOperand, rightOperand, operator);
-
-    accumulated = expression.evaluate();
-  }
-
-  return accumulated;
+  return parse(tokens);
 };
 
 class Expression {
