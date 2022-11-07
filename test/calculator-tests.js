@@ -30,5 +30,6 @@ test("can mix addition and subtraction", t => {
 });
 
 test("evaluate multiplication before addition", t => {
-  t.is(calculate("100*3+2"), calculate("2+100*3"));
+  t.is(calculate("100*3+2"), 302);
+  t.is(calculate("2+100*3"), 302);
 });
