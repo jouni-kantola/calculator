@@ -35,15 +35,14 @@ function parse(tokens) {
   for (let token of tokens) {
     if (token.type === "operand") queue.push(token);
     else {
-      if (token.value === "+" || token.value === "-") {
-        while (
-          stack.length &&
-          (stack[stack.length - 1].value === "*" ||
-            stack[stack.length - 1].value === "/")
-        ) {
-          queue.push(stack.pop());
-        }
+      while (
+        stack.length &&
+        (stack[stack.length - 1].value === "*" ||
+          stack[stack.length - 1].value === "/")
+      ) {
+        queue.push(stack.pop());
       }
+
       stack.push(token);
     }
   }
@@ -70,7 +69,7 @@ function parse(tokens) {
   return operands.pop();
 }
 
-export const calculate = (expression) => {
+export const calculate = expression => {
   const tokens = scan(expression);
 
   return parse(tokens);
