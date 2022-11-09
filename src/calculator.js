@@ -28,36 +28,39 @@ function scan(expression) {
   return tokens;
 }
 
-function parse(tokens) {
-  let stack = [];
-  let queue = [];
+function parse(infixTokens) {
+  let operatorStack = [];
+  let postfixOutput = [];
 
-  for (let token of tokens) {
-    if (token.type === "operand") queue.push(token);
+  for (let token of infixTokens) {
+    if (token.type === "operand") postfixOutput.push(token);
     else {
       while (
-        stack.length &&
-        (stack[stack.length - 1].value === "*" ||
-          stack[stack.length - 1].value === "/")
+        operatorStack.length &&
+        (operatorStack[operatorStack.length - 1].value === "*" ||
+          operatorStack[operatorStack.length - 1].value === "/")
       ) {
-        queue.push(stack.pop());
+        postfixOutput.push(operatorStack.pop());
       }
 
-      while (stack.length && !(token.value === "*" || token.value === "/")) {
-        queue.push(stack.pop());
+      while (
+        operatorStack.length &&
+        !(token.value === "*" || token.value === "/")
+      ) {
+        postfixOutput.push(operatorStack.pop());
       }
 
-      stack.push(token);
+      operatorStack.push(token);
     }
   }
 
-  while (stack.length) {
-    queue.push(stack.pop());
+  while (operatorStack.length) {
+    postfixOutput.push(operatorStack.pop());
   }
 
   const operands = [];
-  while (queue.length) {
-    const term = queue.shift();
+  while (postfixOutput.length) {
+    const term = postfixOutput.shift();
     if (term.type === "operand") operands.push(term.value);
     else {
       const rightOperand = operands.pop();
