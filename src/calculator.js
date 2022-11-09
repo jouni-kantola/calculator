@@ -11,17 +11,16 @@ function scan(expression) {
   while (position < expression.length) {
     let current = expression[position++];
 
-    while (
-      position < expression.length &&
-      !isNaN(Number(expression[position]))
-    ) {
-      current += expression[position++];
-    }
-
-    tokens.push(new Token("operand", Number(current)));
-
-    if (position < expression.length) {
-      current = expression[position++];
+    if (!isNaN(Number(current))) {
+      let number = current;
+      while (
+        position < expression.length &&
+        !isNaN(Number(expression[position]))
+      ) {
+        number += expression[position++];
+      }
+      tokens.push(new Token("operand", Number(number)));
+    } else {
       tokens.push(new Token("operator", current));
     }
   }
