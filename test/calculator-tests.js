@@ -40,6 +40,7 @@ test("can mix multiplication and division", t => {
 });
 
 test("evaluate same precedence operators left to right", t => {
+  t.is(calculate("3-1+100"), 102);
   t.is(calculate("10-10+100*4/2"), 200);
   t.is(calculate("10-10+100/4*2"), 50);
 });
