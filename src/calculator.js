@@ -43,6 +43,10 @@ function parse(tokens) {
         queue.push(stack.pop());
       }
 
+      while (stack.length && !(token.value === "*" || token.value === "/")) {
+        queue.push(stack.pop());
+      }
+
       stack.push(token);
     }
   }
