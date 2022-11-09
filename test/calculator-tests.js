@@ -44,3 +44,7 @@ test("evaluate same precedence operators left to right", t => {
   t.is(calculate("10-10+100*4/2"), 200);
   t.is(calculate("10-10+100/4*2"), 50);
 });
+
+test("parens have higher precedence than multiplication", t => {
+  t.is(calculate("(2+3)*100"), 500);
+});
