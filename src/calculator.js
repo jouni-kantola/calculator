@@ -20,6 +20,10 @@ function scan(expression) {
         number += expression[position++];
       }
       tokens.push(new Token("operand", Number(number)));
+    } else if (current === "(") {
+      tokens.push(new Token("left_paren", current));
+    } else if (current === ")") {
+      tokens.push(new Token("right_paren", current));
     } else {
       tokens.push(new Token("operator", current));
     }
@@ -33,7 +37,13 @@ function parse(infixTokens) {
 
   for (let token of infixTokens) {
     if (token.type === "operand") postfixOutput.push(token);
-    else {
+    else if (token.type === "right_paren") {
+      let operator = operatorStack.pop();
+      while (operatorStack.length && operator.type !== "left_paren") {
+        postfixOutput.push(operator);
+        operator = operatorStack.pop();
+      }
+    } else {
       while (
         operatorStack.length &&
         (operatorStack[operatorStack.length - 1].value === "*" ||
@@ -44,6 +54,7 @@ function parse(infixTokens) {
 
       while (
         operatorStack.length &&
+        operatorStack[operatorStack.length - 1].value !== "(" &&
         !(token.value === "*" || token.value === "/")
       ) {
         postfixOutput.push(operatorStack.pop());
