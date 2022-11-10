@@ -21,9 +21,11 @@ test("can divide", t => {
   t.is(calculate("6/2"), 3);
 });
 
-test("evaluate multiplication before addition", t => {
+test("evaluate multiplication and division before addition and subtraction", t => {
   t.is(calculate("100*3+2"), 302);
   t.is(calculate("2+100*3"), 302);
+  t.is(calculate("10-10+100*4/2"), 200);
+  t.is(calculate("10-10+100/4*2"), 50);
 });
 
 test("evaluate same precedence operators left to right", t => {
@@ -32,8 +34,6 @@ test("evaluate same precedence operators left to right", t => {
   t.is(calculate("3-1+100"), 102);
   t.is(calculate("100*4/2"), 200);
   t.is(calculate("100/4*2"), 50);
-  t.is(calculate("10-10+100*4/2"), 200);
-  t.is(calculate("10-10+100/4*2"), 50);
 });
 
 test("parens evaluated first", t => {
