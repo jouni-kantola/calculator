@@ -37,6 +37,7 @@ function parse(infixTokens) {
 
   for (let token of infixTokens) {
     if (token.type === "operand") postfixOutput.push(token);
+    else if (token.type === "left_paren") operatorStack.push(token);
     else if (token.type === "right_paren") {
       let operator = operatorStack.pop();
       while (operatorStack.length && operator.type !== "left_paren") {

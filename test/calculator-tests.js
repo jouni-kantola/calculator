@@ -48,3 +48,7 @@ test("evaluate same precedence operators left to right", t => {
 test("parens have higher precedence than multiplication", t => {
   t.is(calculate("(2+3)*100"), 500);
 });
+
+test("parens have higher precedence than subtraction", t => {
+  t.is(calculate("11-(2+3)"), 6);
+});
