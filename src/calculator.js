@@ -108,6 +108,8 @@ class Expression {
         return this.leftOperand * this.rightOperand;
       case "/":
         return this.leftOperand / this.rightOperand;
+      case "^":
+        return this.leftOperand ** this.rightOperand;
       default:
         return this.leftOperand - this.rightOperand;
     }

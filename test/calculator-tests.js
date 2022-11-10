@@ -21,6 +21,10 @@ test("can divide", t => {
   t.is(calculate("6/2"), 6 / 2);
 });
 
+test("can power of", t => {
+  t.is(calculate("6^2"), Math.pow(6, 2));
+});
+
 test("evaluate multiplication and division before addition and subtraction", t => {
   t.is(calculate("100*3+2"), 100 * 3 + 2);
   t.is(calculate("2+100*3"), 2 + 100 * 3);
