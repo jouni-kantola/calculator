@@ -45,4 +45,5 @@ test("parens evaluated first", t => {
   t.is(calculate("11-(2+3)"), 11 - (2 + 3));
   t.is(calculate("30/((1+2)*2)"), 30 / ((1 + 2) * 2));
   t.is(calculate("1001-100*(2+3)"), 1001 - 100 * (2 + 3));
+  t.is(calculate("(2+3)*3^2"), (2 + 3) * Math.pow(3, 2));
 });

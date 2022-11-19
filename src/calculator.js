@@ -45,20 +45,27 @@ function parse(infixTokens) {
         operator = operatorStack.pop();
       }
     } else {
-      while (
-        operatorStack.length &&
-        (operatorStack[operatorStack.length - 1].value === "*" ||
-          operatorStack[operatorStack.length - 1].value === "/")
-      ) {
-        postfixOutput.push(operatorStack.pop());
-      }
+      const precedenceOrder = {
+        "^": { precedence: 4, associativity: "right" },
+        "*": { precedence: 3, associativity: "left" },
+        "/": { precedence: 3, associativity: "left" },
+        "+": { precedence: 2, associativity: "left" },
+        "-": { precedence: 2, associativity: "left" },
+      };
 
-      while (
-        operatorStack.length &&
-        operatorStack[operatorStack.length - 1].value !== "(" &&
-        !(token.value === "*" || token.value === "/")
-      ) {
-        postfixOutput.push(operatorStack.pop());
+      const o1 = precedenceOrder[token.value];
+
+      for (let index = operatorStack.length - 1; index > -1; index--) {
+        const operator = operatorStack[index].value;
+        if (operator === "(") break;
+
+        const o2 = precedenceOrder[operator];
+        if (
+          o2.precedence > o1.precedence ||
+          (o2.precedence === o1.precedence && o1.associativity === "left")
+        ) {
+          postfixOutput.push(operatorStack.pop());
+        }
       }
 
       operatorStack.push(token);
