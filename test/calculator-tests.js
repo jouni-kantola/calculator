@@ -47,3 +47,13 @@ test("parens evaluated first", t => {
   t.is(calculate("1001-100*(2+3)"), 1001 - 100 * (2 + 3));
   t.is(calculate("(2+3)*3^2"), (2 + 3) * Math.pow(3, 2));
 });
+
+test("can handle unary operators", t => {
+  t.is(calculate("-1"), -1);
+  t.is(calculate("+1"), 1);
+  t.is(calculate("-100+200"), -100 + 200);
+  t.is(calculate("-(2+3)"), -(2 + 3));
+  t.is(calculate("+1*-5"), 1 * -5);
+  t.is(calculate("+1*-5+2"), 1 * -5 + 2);
+  t.is(calculate("+1*-5/-2"), (1 * -5) / -2);
+});
