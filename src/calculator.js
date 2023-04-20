@@ -8,6 +8,7 @@ class Token {
 function scan(expression) {
   let tokens = [];
   let position = 0;
+  let lastToken = null;
   while (position < expression.length) {
     let current = expression[position++];
 
@@ -24,9 +25,24 @@ function scan(expression) {
       tokens.push(new Token("left_paren", current));
     } else if (current === ")") {
       tokens.push(new Token("right_paren", current));
+    } else if (
+      current === "+" &&
+      (position === 1 ||
+        expression[position - 2] === "(" ||
+        (lastToken && lastToken.type !== "operand"))
+    ) {
+      tokens.push(new Token("unary_operator", current));
+    } else if (
+      current === "-" &&
+      (position === 1 ||
+        expression[position - 2] === "(" ||
+        (lastToken && lastToken.type !== "operand"))
+    ) {
+      tokens.push(new Token("unary_operator", current));
     } else {
       tokens.push(new Token("operator", current));
     }
+    lastToken = tokens[tokens.length - 1];
   }
   return tokens;
 }
@@ -44,6 +60,8 @@ function parse(infixTokens) {
         postfixOutput.push(operator);
         operator = operatorStack.pop();
       }
+    } else if (token.type === "unary_operator") {
+      operatorStack.push(token);
     } else {
       const precedenceOrder = {
         "^": { precedence: 4, associativity: "right" },
@@ -56,10 +74,10 @@ function parse(infixTokens) {
       const o1 = precedenceOrder[token.value];
 
       for (let index = operatorStack.length - 1; index > -1; index--) {
-        const operator = operatorStack[index].value;
-        if (operator === "(") break;
+        const operator = operatorStack[index];
+        if (operator.type === "left_paren") break;
 
-        const o2 = precedenceOrder[operator];
+        const o2 = precedenceOrder[operator.value];
         if (
           o2.precedence > o1.precedence ||
           (o2.precedence === o1.precedence && o1.associativity === "left")
@@ -80,7 +98,15 @@ function parse(infixTokens) {
   while (postfixOutput.length) {
     const term = postfixOutput.shift();
     if (term.type === "operand") operands.push(term.value);
-    else {
+    else if (term.type === "unary_operator") {
+      const operand = operands.pop();
+      const operator = term.value;
+      if (operator === "+") {
+        operands.push(operand);
+      } else {
+        operands.push(-operand);
+      }
+    } else {
       const rightOperand = operands.pop();
       const leftOperand = operands.pop();
       const operator = term.value;
