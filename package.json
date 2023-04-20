@@ -7,9 +7,6 @@
   "author": "Jouni Kantola <jouni@kantola.se>",
   "license": "MIT",
   "scripts": {
-    "test": "ava"
-  },
-  "devDependencies": {
-    "ava": "^5.0.1"
+    "test": "node --test"
   }
 }
